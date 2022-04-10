@@ -4,7 +4,7 @@ function handleRead(req, res) {
     var query = req.query;
     killerPerk.find(query).then((kPerk) => {
         try {
-            res.status(200).send({perk: kPerk});
+            res.status(200).send({perks: kPerk});
         } catch(error) {
             res.status(500).send({error: error});
         }

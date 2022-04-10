@@ -4,7 +4,7 @@ function handleRead(req, res) {
     var query = req.query;
     survivorPerk.find(query).then((sPerk) => {
         try {
-            res.status(200).send({perk: sPerk});
+            res.status(200).send({perks: sPerk});
         } catch(error) {
             res.status(500).send({error: error});
         }
