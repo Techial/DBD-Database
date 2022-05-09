@@ -1,3 +1,6 @@
+const express = require('express');
+
+// Project imports
 const {killerPerk} = require('../../../db/schemes/perk');
 const Prettify = require('../../../utils/prettify');
 
@@ -12,7 +15,13 @@ function handleRead(req, res) {
     });
 }
 
-module.exports = (app, jsonParser) => {
+module.exports = (parentPath) => {
+    // Create new router
+    const router = express.Router();
+
     // Only READ (GET) until we have auth in place
-    app.get('/API/1.0/killer_perks', handleRead);
+    router.get(`${parentPath}killer_perks`, handleRead);
+
+    // Return router for Express to use as Middleware
+    return router;
 };
