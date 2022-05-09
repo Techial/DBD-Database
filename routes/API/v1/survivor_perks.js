@@ -1,12 +1,13 @@
 const {survivorPerk} = require('../../../db/schemes/perk');
+const Prettify = require('../../../utils/prettify');
 
 function handleRead(req, res) {
     var query = req.query;
     survivorPerk.find(query).then((sPerk) => {
         try {
-            res.status(200).send({perks: sPerk});
+            res.status(200).send(Prettify._JSON({perks: sperk}));
         } catch(error) {
-            res.status(500).send({error: error});
+            res.status(500).send(Prettify._JSON({error: error}));
         }
     });
 }
