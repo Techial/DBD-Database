@@ -22,20 +22,23 @@ class DB {
         .then(() => {console.log("Successfully connected to database");})
         .catch((error) => {console.log(error);});
     }
+
+    getConnection() {
+        return mongoose.connection;
+    }
 }
 
 class DBI {
     static DBInterface;
     static getInterface() {
-        if(!this.DBInterface)
+        if(!this.DBInterface || !this.getConnection()?.readyState)
             this.DBInterface = new DB();
 
         return this.DBInterface;
     }
 
     static getConnection() {
-        this.getInterface();
-        return mongoose.connection;
+        return this.getInterface().getConnection();
     }
 
     static initConnection() {
