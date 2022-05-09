@@ -5,11 +5,16 @@ const bodyParser    = require("body-parser");
 const app           = express();
 const port          = process.env.PORT || 80;
 const schedule      = require("node-schedule");
+const compression   = require("compression");
 
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Allow Cross-origin
 var cors = require("cors");
 app.use(cors());
+
+// Use Express compression
+app.use(compression());
 
 // Open connection if not already connected
 DBI.initConnection();
