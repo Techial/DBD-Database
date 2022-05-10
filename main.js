@@ -83,7 +83,7 @@ app.listen(port, () => {
   console.log(`Webserver started on port ${port}`)
 })
 
-// Schedule update for every 2 hours
-// schedule.scheduleJob('0 */2 * * *', () => {
+// Schedule update for every hour
+// schedule.scheduleJob('0 * * * *', () => {
 //  perkJobs.updateKillerAndSurvivorPerks()
 // })

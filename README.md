@@ -5,7 +5,7 @@
   <strong>Automatically updated</strong>
 </div>
 <div align="center">
-  Fetches new information from the <a href="https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki">Dead by Daylight - Wiki</a>
+  Fetches new information from the <a href="https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki">Dead by Daylight - Wiki</a> every hour
 </div>
 
 <br />
@@ -44,7 +44,7 @@
 
 ## Features
 - __organized:__ output doesn't look like it was taken out of a tumbler, thrown on the ground and stamped on
-- __always up-to-date:__ fetches data from the [Dead by Daylight - Wiki](https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki) every 2 hours
+- __always up-to-date:__ fetches data from the [Dead by Daylight - Wiki](https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki) every hour
 
 ## API
 Retrieve Killer Perks at:
