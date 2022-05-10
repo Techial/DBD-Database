@@ -1,5 +1,5 @@
-//const perkJobs = require('./jobs/perk_jobs')
-//const schedule = require('node-schedule')
+// const perkJobs = require('./jobs/perk_jobs')
+// const schedule = require('node-schedule')
 const DBI = require('./db/db')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -75,6 +75,6 @@ app.listen(port, () => {
 })
 
 // Schedule update for every 2 hours
-//schedule.scheduleJob('0 */2 * * *', () => {
+// schedule.scheduleJob('0 */2 * * *', () => {
 //  perkJobs.updateKillerAndSurvivorPerks()
-//})
+// })
