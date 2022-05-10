@@ -8,6 +8,7 @@ const port = process.env.PORT || 80
 const compression = require('compression')
 const cors = require('cors')
 const { statsModel } = require('./db/models/stats')
+const mongoSanitize = require('express-mongo-sanitize')
 
 // Open connection if not already connected
 DBI.initConnection()
@@ -19,6 +20,14 @@ app.use(cors())
 
 // Use Express compression
 app.use(compression())
+
+// Sanitize all user input for MongoDB
+// Removes $ and . characters from user-supplied input in the following places:
+// - req.body
+// - req.params
+// - req.headers
+// - req.query
+app.use(mongoSanitize())
 
 // Middleware for setting header response to JSON
 app.use((req, res, next) => {
