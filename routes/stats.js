@@ -9,7 +9,7 @@ async function handleRead (req, res) {
   const endpoint = req.query?.endpoint || '*' // If endpoint isn't supplied, assume request is for Global
 
   try {
-    const stats = await statsModel.findOne({ endpoint })
+    const stats = await statsModel.findOne({ endpoint: endpoint })
     res.status(200).send(Prettify._JSON({
       schemaVersion: 1,
       label: 'Queries handled',
