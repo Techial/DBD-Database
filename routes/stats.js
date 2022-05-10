@@ -11,7 +11,6 @@ async function handleRead (req, res) {
   try {
     const stats = await statsModel.findOne({ name: endpoint })
     res.status(200).send(Prettify._JSON({
-      endpoint: endpoint,
       schemaVersion: 1,
       label: 'Queries handled',
       message: stats.queries.toString(),
