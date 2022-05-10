@@ -61,11 +61,12 @@ Retrieve Survivor Perks at:
   "perks": [{
     "_id": "mongoDB generated uniqueID",
     "name": "Perk display name (With space and all characters)",
-    "URI_name": "URL safe string (name of perk)",
+    "URIName": "URL safe string (name of perk)",
     "characterImageURL": "Link to PNG of character the perk belongs to, empty if none",
     "characterName": "Name of Character perk belongs to",
     "characterURL": "Link to Character's wiki page at https://deadbydaylight.fandom.com/",
-    "content": "Display text (with HTML elements) scraped from https://deadbydaylight.fandom.com/"
+    "content": "Display text (with HTML elements) scraped from https://deadbydaylight.fandom.com/",
+    "contentText": "Same as `content` without HTML elements"
   },
   ...
   ]
