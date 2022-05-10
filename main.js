@@ -1,14 +1,25 @@
 // const perkJobs = require('./jobs/perk_jobs')
 // const schedule = require('node-schedule')
-const DBI = require('./db/db')
-const express = require('express')
-const bodyParser = require('body-parser')
+import DBI from './db/db.js'
+import express from 'express'
+import bodyParser from 'body-parser'
+import compression from 'compression'
+import cors from 'cors'
+import { statsModel } from './db/models/stats.js'
+import mongoSanitize from 'express-mongo-sanitize'
+
+// Use router provided by the routes in V1
+import killerRouter from './routes/API/v1/killer_perks.js'
+
+import survivorRouter from './routes/API/v1/survivor_perks.js'
+/// ///////////////////////////
+
+/// ///////////////////////////
+//          Stats           //
+import statsRouter from './routes/stats.js'
+
 const app = express()
 const port = process.env.PORT || 80
-const compression = require('compression')
-const cors = require('cors')
-const { statsModel } = require('./db/models/stats')
-const mongoSanitize = require('express-mongo-sanitize')
 
 // Open connection if not already connected
 DBI.initConnection()
@@ -46,7 +57,7 @@ app.use(async (req, res, next) => {
   // Record Global stats
   statsModel.updateOne({ name: '*' }, {
     $inc: { queries: 1 },
-    last_updated: new Date() // new Date() instead of Date.now() so it will work with toLocaleString()
+    lastUpdated: new Date() // new Date() instead of Date.now() so it will work with toLocaleString()
   }, { upsert: true }).exec()
 
   if (path === '*') { return } // Don't record local stats for Global
@@ -54,28 +65,21 @@ app.use(async (req, res, next) => {
   // Record endpoint stats
   statsModel.updateOne({ name: path }, {
     $inc: { queries: 1 },
-    last_updated: new Date() // new Date() instead of Date.now() so it will work with toLocaleString()
+    lastUpdated: new Date() // new Date() instead of Date.now() so it will work with toLocaleString()
   }, { upsert: true }).exec()
 })
 
 /// ///////////////////////////
 //          V1 API          //
 const V1 = '/API/V1/'
-
-// Use router provided by the routes in V1
 app.use(
-  require('./routes/API/v1/killer_perks')(V1) // Killer perks
+  killerRouter(V1) // Killer perks
 )
-
 app.use(
-  require('./routes/API/v1/survivor_perks')(V1) // Survivor perks
+  survivorRouter(V1) // Survivor perks
 )
-/// ///////////////////////////
-
-/// ///////////////////////////
-//          Stats           //
 app.use(
-  require('./routes/stats')()
+  statsRouter() // Query Stats
 )
 
 // Open listening port for Express

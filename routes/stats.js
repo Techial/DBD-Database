@@ -1,9 +1,8 @@
-const express = require('express')
+import express from 'express'
 
 // Project imports
-
-const { statsModel } = require('../db/models/stats')
-const Prettify = require('../utils/prettify')
+import { statsModel } from '../db/models/stats.js'
+import Prettify from '../utils/prettify.js'
 
 async function handleRead (req, res) {
   const endpoint = req.query?.endpoint || '*' // If endpoint isn't supplied, assume request is for Global
@@ -22,7 +21,7 @@ async function handleRead (req, res) {
   }
 }
 
-module.exports = (parentPath = '/') => {
+export default (parentPath = '/') => {
   // Create new router
   const router = express.Router()
 

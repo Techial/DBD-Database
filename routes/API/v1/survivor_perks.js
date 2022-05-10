@@ -1,9 +1,8 @@
-const express = require('express')
+import express from 'express'
 
 // Project imports
-
-const { survivorPerk } = require('../../../db/models/perk')
-const Prettify = require('../../../utils/prettify')
+import { survivorPerk } from '../../../db/models/perk.js'
+import Prettify from '../../../utils/prettify.js'
 
 function handleRead (req, res) {
   const query = req.query
@@ -16,7 +15,7 @@ function handleRead (req, res) {
   })
 }
 
-module.exports = (parentPath = '/') => {
+export default (parentPath = '/') => {
   // Create new router
   const router = express.Router()
 

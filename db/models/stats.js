@@ -1,12 +1,10 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
-const statsModel = new Schema({
+const Model = new Schema({
   name: { type: String, required: true, unique: true },
   queries: { type: Number, default: 0 },
-  last_updated: { type: Date }
+  lastUpdated: { type: Date }
 })
 
-module.exports = {
-  statsModel: mongoose.model('stats', statsModel)
-}
+export const statsModel = mongoose.model('stats', Model)

@@ -4,4 +4,4 @@ class Prettify {
   }
 }
 
-module.exports = Prettify
+export default Prettify

@@ -1,8 +1,11 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+import config from 'dotenv'
 const env = process.env.NODE_ENV || 'development'
 
 // DEV
-if (env === 'development') { require('dotenv').config() }
+if (env === 'development') {
+  config.config()
+}
 
 const IP = process.env.MONGODB_IP
 const dbName = process.env.MONGODB_DB
@@ -44,4 +47,4 @@ class DBI {
   }
 }
 
-module.exports = DBI
+export default DBI

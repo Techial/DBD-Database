@@ -1,6 +1,7 @@
-const HTMLParser = require('node-html-parser')
-const webReader = require('../utils/web_reader')
-const { survivorPerk, killerPerk } = require('../db/models/perk')
+import { stripHtml } from 'string-strip-html'
+import HTMLParser from 'node-html-parser'
+import webReader from '../utils/web_reader.js'
+import { survivorPerk, killerPerk } from '../db/models/perk.js'
 
 class perkJobs {
   static #addURL = 'https://deadbydaylight.fandom.com'
@@ -58,7 +59,7 @@ class perkJobs {
             characterImage = tableRow.querySelectorAll('th')[2].querySelectorAll('a')[1].attributes.href
           }
 
-          const perkData = { URIName, name: perkName, iconURL: perkIcon, characterName, characterURL: characterLink, characterImageURL: characterImage, content }
+          const perkData = { URIName, name: perkName, iconURL: perkIcon, characterName, characterURL: characterLink, characterImageURL: characterImage, content, contentText: stripHtml(content).result }
 
           Perks.push(perkData)
         })
@@ -69,21 +70,49 @@ class perkJobs {
   }
 
   static async retrieveSurvivorPerks () {
-    const perks = await this.#retrievePerks(this.#survivorPerksSelector)
-    perks.forEach(perk => {
-      survivorPerk.findOneAndUpdate({ name: perk.name }, perk, { new: true, upsert: true }, () => {})
-    })
+    try {
+      const perks = await this.#retrievePerks(this.#survivorPerksSelector)
+      const bulkOps = perks.map(perk => {
+        return {
+          updateOne: {
+            filter: {
+              name: perk.name
+            },
+            update: perk,
+            upsert: true
+          }
+        }
+      })
 
-    console.log('Successfully fetched Survivor perks.')
+      await survivorPerk.bulkWrite(bulkOps)
+
+      console.log('Successfully fetched Survivor perks.')
+    } catch (error) {
+      throw new Error('Failed fetching Survivor perks')
+    }
   }
 
   static async retrieveKillerPerks () {
-    const perks = await this.#retrievePerks(this.#killerPerksSelector)
-    perks.forEach(perk => {
-      killerPerk.findOneAndUpdate({ name: perk.name }, perk, { new: true, upsert: true }, () => {})
-    })
+    try {
+      const perks = await this.#retrievePerks(this.#killerPerksSelector)
+      const bulkOps = perks.map(perk => {
+        return {
+          updateOne: {
+            filter: {
+              name: perk.name
+            },
+            update: perk,
+            upsert: true
+          }
+        }
+      })
 
-    console.log('Successfully fetched Killer perks.')
+      await killerPerk.bulkWrite(bulkOps)
+
+      console.log('Successfully fetched Killer perks.')
+    } catch (error) {
+      throw new Error('Failed fetching Killer perks')
+    }
   }
 
   static updateKillerAndSurvivorPerks () {
@@ -100,4 +129,4 @@ class perkJobs {
   }
 }
 
-module.exports = perkJobs
+export default perkJobs

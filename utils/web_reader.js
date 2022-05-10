@@ -1,11 +1,11 @@
+import http from 'http'
+import https from 'https'
+
 class webReader {
   // https://stackoverflow.com/a/48729712
   // sidanmor, 11th of February, 2018
   static readWebsite (url) {
     return new Promise((resolve, reject) => {
-      const http = require('http')
-      const https = require('https')
-
       let client = http
 
       if (url.toString().indexOf('https') === 0) {
@@ -31,4 +31,4 @@ class webReader {
   }
 }
 
-module.exports = webReader
+export default webReader
