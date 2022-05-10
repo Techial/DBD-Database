@@ -16,7 +16,7 @@ function handleRead(req, res) {
     });
 }
 
-module.exports = (parentPath) => {
+module.exports = (parentPath = "/") => {
     // Create new router
     const router = express.Router();
 

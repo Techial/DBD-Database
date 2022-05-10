@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const { stringify } = require('querystring');
 const Schema = mongoose.Schema;
 
-const PerkSchema = new Schema({
+const perk_model = new Schema({
     URI_name: {type: String, required: true, unique: true},
     name: {type: String, required: true},
     iconURL: {type: String, required: true},
@@ -13,6 +12,6 @@ const PerkSchema = new Schema({
 });
 
 module.exports = {
-    "survivorPerk": mongoose.model('survivorPerk', PerkSchema),
-    "killerPerk": mongoose.model('killerPerk', PerkSchema),
+    "survivorPerk": mongoose.model('survivorPerk', perk_model),
+    "killerPerk": mongoose.model('killerPerk', perk_model),
 };
