@@ -13,7 +13,7 @@ async function handleRead(req, res) {
         res.status(200).send(Prettify._JSON({
             schemaVersion: 1,
             label: "Queries",
-            message: stats.queries,
+            message: stats.queries.toString(),
             color: "green"
         }));
     } catch(error) {
