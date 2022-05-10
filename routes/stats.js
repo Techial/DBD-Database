@@ -12,7 +12,7 @@ async function handleRead(req, res) {
         const stats = await stats_model.findOne({ endpoint: endpoint });
         res.status(200).send(Prettify._JSON({
             schemaVersion: 1,
-            label: "Queries",
+            label: "Queries handled",
             message: stats.queries.toString(),
             color: "green"
         }));
