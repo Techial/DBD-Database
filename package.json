@@ -23,9 +23,6 @@
   "engines": {
     "node": "16.x"
   },
-  "devDependencies": {
-    "dotenv": "^16.0.0"
-  },
   "dependencies": {
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
@@ -35,6 +32,7 @@
     "mongoose": "^6.2.10",
     "node-html-parser": "^5.3.3",
     "node-schedule": "^2.1.0",
-    "string-strip-html": "^9.1.12"
+    "string-strip-html": "^9.1.12",
+    "dotenv": "^16.0.0"
   }
 }
