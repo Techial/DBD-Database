@@ -14,7 +14,8 @@ async function handleRead (req, res) {
       schemaVersion: 1,
       label: 'Queries handled',
       message: stats.queries.toString(),
-      color: 'success'
+      color: 'success',
+      style: 'flat-square'
     }))
   } catch (error) {
     res.status(500).send(Prettify._JSON({ error }))
