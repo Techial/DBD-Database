@@ -9,6 +9,9 @@ const compression = require('compression')
 const cors = require('cors')
 const { statsModel } = require('./db/models/stats')
 
+// Open connection if not already connected
+DBI.initConnection()
+
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Allow Cross-origin
@@ -16,9 +19,6 @@ app.use(cors())
 
 // Use Express compression
 app.use(compression())
-
-// Open connection if not already connected
-DBI.initConnection()
 
 // Middleware for setting header response to JSON
 app.use((req, res, next) => {
@@ -73,9 +73,6 @@ app.use(
 app.listen(port, () => {
   console.log(`Webserver started on port ${port}`)
 })
-
-// Update perks when app starts
-perkJobs.updateKillerAndSurvivorPerks()
 
 // Schedule update for every 2 hours
 schedule.scheduleJob('0 */2 * * *', () => {

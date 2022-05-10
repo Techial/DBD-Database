@@ -68,34 +68,35 @@ class perkJobs {
     })
   }
 
-  static retrieveSurvivorPerks () {
-    this.#retrievePerks(this.#survivorPerksSelector).then((perkData) => {
-      perkData.forEach(perk => {
-        survivorPerk.findOneAndUpdate({ name: perk.name }, perk, { new: true, upsert: true }, () => {})
-      })
-
-      console.log('Successfully fetched Survivor perks.')
-    }).catch(() => {
-      console.log('Fetching Survivor perks failed!')
+  static async retrieveSurvivorPerks () {
+    const perks = await this.#retrievePerks(this.#survivorPerksSelector)
+    perks.forEach(perk => {
+      survivorPerk.findOneAndUpdate({ name: perk.name }, perk, { new: true, upsert: true }, () => {})
     })
+
+    console.log('Successfully fetched Survivor perks.')
   }
 
-  static retrieveKillerPerks () {
-    this.#retrievePerks(this.#killerPerksSelector).then((perkData) => {
-      perkData.forEach(perk => {
-        killerPerk.findOneAndUpdate({ name: perk.name }, perk, { new: true, upsert: true }, () => {})
-      })
-
-      console.log('Successfully fetched Killer perks.')
-    }).catch(() => {
-      console.log('Fetching Killer perks failed!')
+  static async retrieveKillerPerks () {
+    const perks = await this.#retrievePerks(this.#killerPerksSelector)
+    perks.forEach(perk => {
+      killerPerk.findOneAndUpdate({ name: perk.name }, perk, { new: true, upsert: true }, () => {})
     })
+
+    console.log('Successfully fetched Killer perks.')
   }
 
   static updateKillerAndSurvivorPerks () {
     console.log('Updating perk database...')
-    this.retrieveSurvivorPerks()
-    this.retrieveKillerPerks()
+    return new Promise((resolve, reject) => {
+      try {
+        Promise.all([this.retrieveSurvivorPerks(), this.retrieveKillerPerks()]).then(() => {
+          resolve('Successfully updated perk database')
+        })
+      } catch (error) {
+        reject(new Error('Perk database update failed'))
+      }
+    })
   }
 }
 
