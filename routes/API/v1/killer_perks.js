@@ -1,7 +1,7 @@
 const express = require('express');
 
 // Project imports
-const {killerPerk} = require('../../../db/schemes/perk');
+const {killerPerk} = require('../../../db/models/perk');
 const Prettify = require('../../../utils/prettify');
 
 function handleRead(req, res) {

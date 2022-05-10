@@ -1,6 +1,6 @@
 const HTMLParser = require("node-html-parser");
 const webReader = require("../utils/web_reader");
-const {survivorPerk, killerPerk} = require("../db/schemes/perk");
+const {survivorPerk, killerPerk} = require("../db/models/perk");
 
 class perkJobs {
     static #addURL                  = "https://deadbydaylight.fandom.com";
