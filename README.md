@@ -31,7 +31,7 @@
 <div align="center">
   <sub>Built with ❤︎ by
   <a href="https://github.com/Techial">Techial</a> and
-  <a href="https://github.com/Techial/DBD-PerkBase/graphs/contributors">
+  <a href="https://github.com/Techial/DBD-Database/graphs/contributors">
     contributors
   </a>
 </div>
