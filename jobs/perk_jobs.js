@@ -5,6 +5,8 @@ import { survivorPerk, killerPerk } from '../db/models/perk.js'
 
 class perkJobs {
   static #addURL = 'https://deadbydaylight.fandom.com'
+
+  // Perks
   static #perksURL = 'https://deadbydaylight.fandom.com/wiki/Perks'
   static #survivorPerksSelector = "h2:has(span[id^='Survivor_Perks_'])+table>tbody"
   static #killerPerksSelector = "h2:has(span[id^='Killer_Perks_'])+table>tbody"
@@ -50,16 +52,12 @@ class perkJobs {
 
           const content = contentA.innerHTML
           let characterName = ''
-          let characterLink = ''
-          let characterImage = ''
 
           if (character) { // Check if character exists, otherwise assume perk belongs to all
             characterName = character.attributes.title
-            characterLink = this.#addURL + character.attributes.href
-            characterImage = tableRow.querySelectorAll('th')[2].querySelectorAll('a')[1].attributes.href
           }
 
-          const perkData = { URIName, name: perkName, iconURL: perkIcon, characterName, characterURL: characterLink, characterImageURL: characterImage, content, contentText: stripHtml(content).result }
+          const perkData = { URIName, name: perkName, iconURL: perkIcon, characterName, content, contentText: stripHtml(content).result }
 
           Perks.push(perkData)
         })
@@ -86,9 +84,34 @@ class perkJobs {
 
       await survivorPerk.bulkWrite(bulkOps)
 
+      // Now add all character references
+      await survivorPerk.aggregate([
+        // Get character from perk.characterName
+        // $project it to only select _id from character
+        {
+          $lookup: {
+            from: "survivors",
+            localField: "characterName",
+            foreignField: "name",
+            as: "character"
+          }
+        },
+        // Unpack array into an object
+        {
+          $unwind: { path: "$character" }
+        },
+        // Overwrite character field to only be _id from object unpacked above
+        {
+          $set: { character: { $getField: { field: "_id", input: "$character" } } }
+        },
+        {
+          $out: "survivorperks"
+        }
+      ])
+
       console.log('Successfully fetched Survivor perks.')
     } catch (error) {
-      throw new Error('Failed fetching Survivor perks')
+      throw new Error('Failed fetching Survivor perks ' + error)
     }
   }
 
@@ -109,9 +132,38 @@ class perkJobs {
 
       await killerPerk.bulkWrite(bulkOps)
 
+      // Now add all character references
+      await killerPerk.aggregate([
+        // Get character from perk.characterName
+        // $project it to only select _id from character
+        {
+          $lookup: {
+            from: "killers",
+            localField: "characterName",
+            foreignField: "killerName",
+            as: "character"
+          }
+        },
+        // Unpack array into an object
+        {
+          $unwind: { path: "$character" }
+        },
+        // Overwrite character field to only be _id from object unpacked above
+        {
+          $set: { 
+            character: { 
+              $getField: { field: "_id", input: "$character" } 
+            }
+          }
+        },
+        {
+          $out: "killerperks"
+        }
+      ])
+
       console.log('Successfully fetched Killer perks.')
     } catch (error) {
-      throw new Error('Failed fetching Killer perks')
+      throw new Error('Failed fetching Killer perks '+error)
     }
   }
 

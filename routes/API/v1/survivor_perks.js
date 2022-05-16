@@ -1,5 +1,8 @@
 import express from 'express'
 
+// Create new router
+const router = express.Router()
+
 // Project imports
 import { survivorPerk } from '../../../db/models/perk.js'
 import Prettify from '../../../utils/prettify.js'
@@ -15,13 +18,9 @@ function handleRead (req, res) {
   })
 }
 
-export default (parentPath = '/') => {
-  // Create new router
-  const router = express.Router()
 
-  // Only READ (GET) until we have auth in place
-  router.get(`${parentPath}survivor_perks`, handleRead)
+// Only READ (GET) until we have auth in place
+router.get(`/survivor_perks`, handleRead)
 
-  // Return router for Express to use as Middleware
-  return router
-}
+// Return router for Express to use as Middleware
+export default router

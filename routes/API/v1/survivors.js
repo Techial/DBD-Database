@@ -4,14 +4,14 @@ import express from 'express'
 const router = express.Router()
 
 // Project imports
-import { killerPerk } from '../../../db/models/perk.js'
+import { Survivor } from '../../../db/models/character.js'
 import Prettify from '../../../utils/prettify.js'
 
 function handleRead (req, res) {
   const query = req.query
-  killerPerk.find(query).then((kPerk) => {
+  Survivor.find(query).then((survivor) => {
     try {
-      res.status(200).send(Prettify._JSON({ perks: kPerk }))
+      res.status(200).send(Prettify._JSON({ survivors: survivor }))
     } catch (error) {
       res.status(500).send(Prettify._JSON({ error }))
     }
@@ -19,7 +19,7 @@ function handleRead (req, res) {
 }
 
 // Only READ (GET) until we have auth in place
-router.get(`/killer_perks`, handleRead)
+router.get(`/survivors`, handleRead)
 
 // Return router for Express to use as Middleware
-export default router;
+export default router

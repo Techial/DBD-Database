@@ -4,7 +4,7 @@ import express from 'express'
 import { statsModel } from '../db/models/stats.js'
 import Prettify from '../utils/prettify.js'
 
-const numFormatter = Intl.NumberFormat('en', { notation: 'compact' });
+const numFormatter = Intl.NumberFormat('en', { notation: 'compact' })
 
 async function handleRead (req, res) {
   const endpoint = req.query?.endpoint || '*' // If endpoint isn't supplied, assume request is for Global

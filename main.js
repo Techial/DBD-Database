@@ -9,9 +9,7 @@ import { statsModel } from './db/models/stats.js'
 import mongoSanitize from 'express-mongo-sanitize'
 
 // Use router provided by the routes in V1
-import killerRouter from './routes/API/v1/killer_perks.js'
-
-import survivorRouter from './routes/API/v1/survivor_perks.js'
+import V1Router from './routes/API/V1.js'
 /// ///////////////////////////
 
 /// ///////////////////////////
@@ -71,12 +69,8 @@ app.use(async (req, res, next) => {
 
 /// ///////////////////////////
 //          V1 API          //
-const V1 = '/API/V1/'
 app.use(
-  killerRouter(V1) // Killer perks
-)
-app.use(
-  survivorRouter(V1) // Survivor perks
+  V1Router
 )
 app.use(
   statsRouter() // Query Stats
@@ -86,8 +80,3 @@ app.use(
 app.listen(port, () => {
   console.log(`Webserver started on port ${port}`)
 })
-
-// Schedule update for every hour
-// schedule.scheduleJob('0 * * * *', () => {
-//  perkJobs.updateKillerAndSurvivorPerks()
-// })
