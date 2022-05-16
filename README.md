@@ -71,6 +71,7 @@ Perks:
     "_id": "mongoDB generated unique ObjectID",
     "name": "Perk display name (With space and all characters)",
     "URIName": "URL safe string (name of perk)",
+    "iconURL": "Perk icon URL",
     "characterName": "Name of Character perk belongs to",
     "character": "ObjectID of Character perk belongs to",
     "content": "Display text (with HTML elements) scraped from https://deadbydaylight.fandom.com/",
