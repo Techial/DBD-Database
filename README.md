@@ -55,16 +55,24 @@ Retrieve Survivor Perks at:
 <blockquote><a href="https://dbd.techial.net/API/v1/survivor_perks">https://dbd.techial.net/API/v1/survivor_perks</a></blockquote>
 <br/>
 
+Retrieve Killers at:
+<blockquote><a href="https://dbd.techial.net/API/v1/killers">https://dbd.techial.net/API/v1/killers</a></blockquote>
+<br/>
+
+Retrieve Survivors at:
+<blockquote><a href="https://dbd.techial.net/API/v1/survivors">https://dbd.techial.net/API/v1/survivors</a></blockquote>
+<br/>
+
 ## Data Structure
+Perks:
 ```json
 {
   "perks": [{
-    "_id": "mongoDB generated uniqueID",
+    "_id": "mongoDB generated unique ObjectID",
     "name": "Perk display name (With space and all characters)",
     "URIName": "URL safe string (name of perk)",
-    "characterImageURL": "Link to PNG of character the perk belongs to, empty if none",
     "characterName": "Name of Character perk belongs to",
-    "characterURL": "Link to Character's wiki page at https://deadbydaylight.fandom.com/",
+    "character": "ObjectID of Character perk belongs to",
     "content": "Display text (with HTML elements) scraped from https://deadbydaylight.fandom.com/",
     "contentText": "Same as `content` without HTML elements"
   },
@@ -72,5 +80,37 @@ Retrieve Survivor Perks at:
   ]
 }
 ```
+
+Survivors:
+```json
+{
+  "survivors": [{
+    "_id": "mongoDB generated unique ObjectID",
+    "name": "Character display name (With space and all characters)",
+    "URIName": "URL safe string (name of survivor)",
+    "iconURL": "Character image URL",
+    "link": "Character URL at https://deadbydaylight.fandom.com/"
+  },
+  ...
+  ]
+}
+```
+
+Killers:
+```json
+{
+  "killers": [{
+    "_id": "mongoDB generated unique ObjectID",
+    "name": "Full Character name (With space and all characters)",
+    "killerName": "Short name used in-game (e.g Trapper, Wraith etc)",
+    "URIName": "URL safe string (name of Killer)",
+    "iconURL": "Character image URL",
+    "link": "Character URL at https://deadbydaylight.fandom.com/"
+  },
+  ...
+  ]
+}
+```
+
 ## Support
 Open an issue if you feel like anything needs to be added. I'll gladly review pull requests and merge them if deemed to be useful!
