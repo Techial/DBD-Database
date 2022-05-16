@@ -1,5 +1,5 @@
 
-<h1 align="center">Dead by Daylight - Perk Database</h1>
+<h1 align="center">Dead by Daylight - Database</h1>
 
 <div align="center">
   <strong>Automatically updated</strong>
