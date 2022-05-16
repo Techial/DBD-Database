@@ -20,7 +20,7 @@ class charJobs {
 
         const CharTable = parsedHTML.querySelector(selector)
 
-        const isKiller = selector === this.#killersSelector;
+        const isKiller = selector === this.#killersSelector
 
         if (!CharTable) {
           reject(new Error('HTML table with characters not found.'))
@@ -34,11 +34,11 @@ class charJobs {
           const charA = charDiv.querySelectorAll('a')[0]
 
           const characterName = charA.innerText
-          var killerName;
+          let killerName
 
-            if(isKiller) {
-                killerName = charDiv.innerText.split(' - ').pop();
-            }
+          if (isKiller) {
+            killerName = charDiv.innerText.split(' - ').pop()
+          }
 
           const URIName = charA.attributes.href.split('/').pop() // Should only be 3% slower than arr[arr.length - 1]
           const characterLink = this.#addURL + charA.attributes.href

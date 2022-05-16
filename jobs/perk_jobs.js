@@ -90,22 +90,22 @@ class perkJobs {
         // $project it to only select _id from character
         {
           $lookup: {
-            from: "survivors",
-            localField: "characterName",
-            foreignField: "name",
-            as: "character"
+            from: 'survivors',
+            localField: 'characterName',
+            foreignField: 'name',
+            as: 'character'
           }
         },
         // Unpack array into an object
         {
-          $unwind: { path: "$character" }
+          $unwind: { path: '$character' }
         },
         // Overwrite character field to only be _id from object unpacked above
         {
-          $set: { character: { $getField: { field: "_id", input: "$character" } } }
+          $set: { character: { $getField: { field: '_id', input: '$character' } } }
         },
         {
-          $out: "survivorperks"
+          $out: 'survivorperks'
         }
       ])
 
@@ -138,32 +138,32 @@ class perkJobs {
         // $project it to only select _id from character
         {
           $lookup: {
-            from: "killers",
-            localField: "characterName",
-            foreignField: "killerName",
-            as: "character"
+            from: 'killers',
+            localField: 'characterName',
+            foreignField: 'killerName',
+            as: 'character'
           }
         },
         // Unpack array into an object
         {
-          $unwind: { path: "$character" }
+          $unwind: { path: '$character' }
         },
         // Overwrite character field to only be _id from object unpacked above
         {
-          $set: { 
-            character: { 
-              $getField: { field: "_id", input: "$character" } 
+          $set: {
+            character: {
+              $getField: { field: '_id', input: '$character' }
             }
           }
         },
         {
-          $out: "killerperks"
+          $out: 'killerperks'
         }
       ])
 
       console.log('Successfully fetched Killer perks.')
     } catch (error) {
-      throw new Error('Failed fetching Killer perks '+error)
+      throw new Error('Failed fetching Killer perks ' + error)
     }
   }
 

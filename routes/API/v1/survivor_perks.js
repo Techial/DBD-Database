@@ -1,11 +1,11 @@
 import express from 'express'
 
-// Create new router
-const router = express.Router()
-
 // Project imports
 import { survivorPerk } from '../../../db/models/perk.js'
 import Prettify from '../../../utils/prettify.js'
+
+// Create new router
+const router = express.Router()
 
 function handleRead (req, res) {
   const query = req.query
@@ -18,9 +18,8 @@ function handleRead (req, res) {
   })
 }
 
-
 // Only READ (GET) until we have auth in place
-router.get(`/survivor_perks`, handleRead)
+router.get('/survivor_perks', handleRead)
 
 // Return router for Express to use as Middleware
 export default router
