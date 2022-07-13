@@ -72,8 +72,8 @@ Perks:
     "name": "Perk display name (With space and all characters)",
     "URIName": "URL safe string (name of perk)",
     "iconURL": "Perk icon URL",
-    "characterName": "Name of Character perk belongs to",
-    "character": "ObjectID of Character perk belongs to",
+    "characterName": "Name of Character perk belongs to - THIS FIELD IS OMITTED IF NO CHARACTER IS ASSOCIATED WITH THE PERK",
+    "character": "ObjectID of Character perk belongs to - THIS FIELD IS OMITTED IF NO CHARACTER IS ASSOCIATED WITH THE PERK",
     "content": "Display text (with HTML elements) scraped from https://deadbydaylight.fandom.com/",
     "contentText": "Same as `content` without HTML elements"
   },
