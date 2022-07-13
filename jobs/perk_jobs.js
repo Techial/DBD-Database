@@ -8,8 +8,8 @@ class perkJobs {
 
   // Perks
   static #perksURL = 'https://deadbydaylight.fandom.com/wiki/Perks'
-  static #survivorPerksSelector = "h2:has(span[id^='Survivor_Perks_'])+table>tbody"
-  static #killerPerksSelector = "h2:has(span[id^='Killer_Perks_'])+table>tbody"
+  static #survivorPerksSelector = "h3:has(span[id^='Survivor_Perks_'])+table>tbody"
+  static #killerPerksSelector = "h3:has(span[id^='Killer_Perks_'])+table>tbody"
 
   static #retrievePerks (selector) {
     if (!selector) { return false }
@@ -51,13 +51,11 @@ class perkJobs {
           })
 
           const content = contentA.innerHTML
-          let characterName = ''
+          const perkData = { URIName, name: perkName, iconURL: perkIcon, content, contentText: stripHtml(content).result }
 
           if (character) { // Check if character exists, otherwise assume perk belongs to all
-            characterName = character.attributes.title
+            perkData.characterName = character.attributes.title
           }
-
-          const perkData = { URIName, name: perkName, iconURL: perkIcon, characterName, content, contentText: stripHtml(content).result }
 
           Perks.push(perkData)
         })
@@ -86,6 +84,12 @@ class perkJobs {
 
       // Now add all character references
       await survivorPerk.aggregate([
+        // Only grab perks with characters assigned
+        {
+          $match: {
+            characterName: { $exists: true }
+          }
+        },
         // Get character from perk.characterName
         // $project it to only select _id from character
         {
@@ -104,8 +108,13 @@ class perkJobs {
         {
           $set: { character: { $getField: { field: '_id', input: '$character' } } }
         },
+        // Now merge the updated cells into the table, so we also keep the perks without any characters assigned
         {
-          $out: 'survivorperks'
+          $merge: {
+            into: "survivorperks",
+            whenMatched: "replace",
+            whenNotMatched: "insert"
+          }
         }
       ])
 
@@ -134,6 +143,12 @@ class perkJobs {
 
       // Now add all character references
       await killerPerk.aggregate([
+        // Only grab perks with characters assigned
+        {
+          $match: {
+            characterName: { $exists: true } 
+          }
+        },
         // Get character from perk.characterName
         // $project it to only select _id from character
         {
@@ -156,8 +171,13 @@ class perkJobs {
             }
           }
         },
+        // Now merge the updated cells into the table, so we also keep the perks without any characters assigned
         {
-          $out: 'killerperks'
+          $merge: {
+            into: "killerperks",
+            whenMatched: "replace",
+            whenNotMatched: "insert"
+          }
         }
       ])
 
