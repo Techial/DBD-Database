@@ -33,7 +33,7 @@ class DB {
 class DBI {
   static DBInterface
   static getInterface () {
-    if (!this.DBInterface || !this.getConnection()?.readyState) { this.DBInterface = new DB() }
+    if (!this.DBInterface || !this.DBInterface?.readyState) { this.DBInterface = new DB() }
 
     return this.DBInterface
   }

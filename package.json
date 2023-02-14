@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Techial/DBD-PerkBase#readme",
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
