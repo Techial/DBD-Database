@@ -16,11 +16,6 @@
     <img src="https://img.shields.io/badge/stability-stable-g.svg?style=flat-square"
       alt="API stability" />
   </a>
-  <!-- Queries Handled -->
-  <a href="https://dbdperks.herokuapp.com/stats_badge">
-    <img src="https://img.shields.io/endpoint?url=https://dbdperks.herokuapp.com/stats_badge"
-      alt="Queries handled" />
-  </a>
   <!-- Standard -->
   <a href="https://standardjs.com">
     <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square"
@@ -48,19 +43,19 @@
 
 ## API
 Retrieve Killer Perks at:
-<blockquote><a href="https://dbd.techial.net/API/v1/killer_perks">https://dbd.techial.net/API/v1/killer_perks</a></blockquote>
+<blockquote>/API/v1/killer_perks</blockquote>
 <br/>
 
 Retrieve Survivor Perks at:
-<blockquote><a href="https://dbd.techial.net/API/v1/survivor_perks">https://dbd.techial.net/API/v1/survivor_perks</a></blockquote>
+<blockquote>/API/v1/survivor_perks</blockquote>
 <br/>
 
 Retrieve Killers at:
-<blockquote><a href="https://dbd.techial.net/API/v1/killers">https://dbd.techial.net/API/v1/killers</a></blockquote>
+<blockquote>/API/v1/killers</blockquote>
 <br/>
 
 Retrieve Survivors at:
-<blockquote><a href="https://dbd.techial.net/API/v1/survivors">https://dbd.techial.net/API/v1/survivors</a></blockquote>
+<blockquote>/API/v1/survivors</blockquote>
 <br/>
 
 ## Data Structure
