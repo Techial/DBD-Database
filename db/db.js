@@ -20,13 +20,17 @@ class DB {
     url += IP
     url += '/' + dbName
 
-    mongoose.connect(url, { useNewUrlParser: true })
+    this.connectionPromise = mongoose.connect(url, { useNewUrlParser: true })
       .then(() => { console.log('Successfully connected to database') })
-      .catch((error) => { console.log(error) })
+      .catch((error) => { console.log(error); throw error })
   }
 
   getConnection () {
     return mongoose.connection
+  }
+
+  async waitForConnection () {
+    return this.connectionPromise
   }
 }
 
@@ -44,6 +48,10 @@ class DBI {
 
   static initConnection () {
     this.getInterface()
+  }
+
+  static async waitForConnection () {
+    return this.getInterface().waitForConnection()
   }
 }
 
