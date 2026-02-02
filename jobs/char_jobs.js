@@ -7,8 +7,8 @@ class charJobs {
 
   // Characters
   static #charactersURL = 'https://deadbydaylight.fandom.com/wiki/Characters'
-  static #survivorsSelector = "h2:has(span[id^='Survivors'])+dl+div"
-  static #killersSelector = "h2:has(span[id^='Killers'])+dl+div"
+  static #survivorsSelector = "h2:has(span[id='Survivors'])+dl+div"
+  static #killersSelector = "h2:has(span[id='Killers'])+dl+div"
 
   static #retrieveCharacters (selector) {
     if (!selector) { return false }
@@ -27,26 +27,35 @@ class charJobs {
           return
         }
 
-        CharTable.childNodes.forEach(charDiv => {
+        // Filter to only element nodes (skip text nodes)
+        const charDivs = CharTable.childNodes.filter(node => node.nodeType === 1)
+
+        charDivs.forEach(charDiv => {
           if (!charDiv.childNodes?.length >= 2) { return }
 
-          // Character Info
-          const charA = charDiv.querySelectorAll('a')[0]
+          // Character Info - first <a> tag has the character name
+          const charA = charDiv.querySelector('a')
+          if (!charA) { return }
 
-          const characterName = charA.innerText
+          const characterName = charA.innerText?.trim()
+          if (!characterName) { return }
+
           let killerName
 
           if (isKiller) {
-            killerName = charDiv.innerText.split(' - ').pop()
+            // Killer name appears as text after the character name link
+            // e.g., "Evan MacMillan" link followed by "The Trapper" text
+            const fullText = charDiv.innerText?.trim() || ''
+            // The killer name is everything after the character name
+            killerName = fullText.replace(characterName, '').trim()
           }
 
-          const URIName = charA.attributes.href.split('/').pop() // Should only be 3% slower than arr[arr.length - 1]
+          const URIName = charA.attributes.href?.split('/').pop()
           const characterLink = this.#addURL + charA.attributes.href
 
-          // Character Image
-          const imgA = charDiv.querySelectorAll('img')[0]
-
-          const characterImage = imgA.attributes['data-src']
+          // Character Image - find img with data-src attribute
+          const img = charDiv.querySelector('img[data-src]')
+          const characterImage = img?.attributes['data-src']
 
           const characterData = { name: characterName, killerName, URIName, iconURL: characterImage, link: characterLink }
 
@@ -77,7 +86,7 @@ class charJobs {
 
       console.log('Successfully fetched Survivors.')
     } catch (error) {
-      throw new Error('Failed fetching Survivors')
+      throw new Error('Failed fetching Survivors: ' + error.message)
     }
   }
 
@@ -100,7 +109,7 @@ class charJobs {
 
       console.log('Successfully fetched Killers.')
     } catch (error) {
-      throw new Error('Failed fetching Killers')
+      throw new Error('Failed fetching Killers: ' + error.message)
     }
   }
 

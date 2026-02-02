@@ -8,8 +8,9 @@ class perkJobs {
 
   // Perks
   static #perksURL = 'https://deadbydaylight.fandom.com/wiki/Perks'
-  static #survivorPerksSelector = "h3:has(span[id^='Survivor_Perks_'])+table>tbody"
-  static #killerPerksSelector = "h3:has(span[id^='Killer_Perks_'])+table>tbody"
+  // Selectors use *= (contains) since IDs now include perk count e.g. "Survivor_Perks_(149)"
+  static #survivorPerksSelector = "h3:has(span[id*='Survivor_Perks'])+table>tbody"
+  static #killerPerksSelector = "h3:has(span[id*='Killer_Perks'])+table>tbody"
 
   static #retrievePerks (selector) {
     if (!selector) { return false }
@@ -19,8 +20,6 @@ class perkJobs {
         const Perks = []
         const parsedHTML = HTMLParser.parse(data)
 
-        // CSS selector for ** perks table:
-        // h2:has(span[id^='**_Perks_'])+table
         const PerkTable = parsedHTML.querySelector(selector)
 
         if (!PerkTable) {
@@ -28,32 +27,45 @@ class perkJobs {
           return
         }
 
-        PerkTable.childNodes.forEach(tableRow => {
-          if (!tableRow.childNodes[1]) { return }
+        // Filter to only element nodes (skip text nodes)
+        const tableRows = PerkTable.childNodes.filter(node => node.nodeType === 1)
 
-          const iconA = tableRow.querySelectorAll('th')[0].querySelector('a')
-          const nameA = tableRow.querySelectorAll('th')[1].querySelector('a')
+        tableRows.forEach(tableRow => {
+          const thElements = tableRow.querySelectorAll('th')
+          const tdElements = tableRow.querySelectorAll('td')
 
-          // Check if actual perk
+          if (thElements.length < 2) { return }
+
+          const iconA = thElements[0]?.querySelector('a')
+          const nameA = thElements[1]?.querySelector('a')
+
+          // Check if actual perk row (skip header row)
           if (!iconA || !nameA) { return }
 
-          const contentA = tableRow.querySelectorAll('td')[0].querySelector('.formattedPerkDesc')
+          // Description is in the <td> element (no more .formattedPerkDesc class)
+          const contentTd = tdElements[0]
 
-          const character = tableRow.querySelectorAll('th')[2].querySelectorAll('a')[0]
+          // Character is in the 3rd <th> element (index 2)
+          const character = thElements[2]?.querySelector('a')
 
-          // Actual usable variables
+          // Icon URL is now in the href attribute of the <a> tag
           const perkIcon = iconA.attributes.href
-          const perkName = nameA.text
-          const URIName = nameA.attributes.href.split('/').pop() // Should only be 3% slower than arr[arr.length - 1]
+          const perkName = nameA.text?.trim()
+          const URIName = nameA.attributes.href?.split('/').pop()
 
-          contentA.querySelectorAll('a').forEach(link => {
-            link.setAttribute('href', this.#addURL + link.attributes.href)
+          if (!contentTd || !perkName) { return }
+
+          // Update internal links to be full URLs
+          contentTd.querySelectorAll('a').forEach(link => {
+            if (link.attributes.href && !link.attributes.href.startsWith('http')) {
+              link.setAttribute('href', this.#addURL + link.attributes.href)
+            }
           })
 
-          const content = contentA.innerHTML
+          const content = contentTd.innerHTML
           const perkData = { URIName, name: perkName, iconURL: perkIcon, content, contentText: stripHtml(content).result }
 
-          if (character) { // Check if character exists, otherwise assume perk belongs to all
+          if (character) {
             perkData.characterName = character.attributes.title
           }
 
